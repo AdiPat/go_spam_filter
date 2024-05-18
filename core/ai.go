@@ -1,4 +1,4 @@
-package main
+package core
 
 import (
 	"bytes"
@@ -54,6 +54,7 @@ func GetCompletion(system string, query string) string {
 			{Role: "user", Content: query},
 		},
 	}
+
 	jsonBody, err := json.Marshal(reqBody)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -90,6 +91,10 @@ func GetCompletion(system string, query string) string {
 	if jsonErr != nil {
 		fmt.Println("Error:", jsonErr)
 		return "Error: Failed to parse response from AI"
+	}
+
+	if len(response.Choices) == 0 {
+		return "Error: No choices in response from AI"
 	}
 
 	return response.Choices[0].Message.Content
